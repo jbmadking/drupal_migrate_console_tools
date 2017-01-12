@@ -1,12 +1,12 @@
 <?php
 
-namespace Drupal\migrate_tools\Command;
+namespace Drupal\migrate_console_tools\Command;
 
 use Drupal\Console\Command\Shared\ContainerAwareCommandTrait;
 use Drupal\Console\Style\DrupalStyle;
 use Drupal\migrate\Plugin\MigrationInterface;
-use Drupal\migrate_tools\ConsoleLogMigrateMessage;
-use Drupal\migrate_tools\MigrateExecutable;
+use Drupal\migrate_console_tools\ConsoleLogMigrateMessage;
+use Drupal\migrate_console_tools\MigrateExecutable;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -84,7 +84,15 @@ class ImportCommand extends Command {
       return;
     }
 
-    $options = $this->buildOptionList($input);
+    $options = $this->buildOptionList($input,
+                                      [
+                                        'limit',
+                                        'feedback',
+                                        'idlist',
+                                        'update',
+                                        'force',
+                                        'execute-dependencies',
+                                      ]);
     $options['logger'] = new ConsoleLogMigrateMessage($io);
 
     // Take it one group at a time, importing the migrations within each group.
@@ -95,23 +103,6 @@ class ImportCommand extends Command {
     $io->info($this->trans('commands.migrate.import.messages.success'));
   }
 
-  private function buildOptionList(InputInterface $input) {
-
-    $options = [];
-    foreach ([
-               'limit',
-               'feedback',
-               'idlist',
-               'update',
-               'force',
-               'execute-dependencies',
-             ] as $option) {
-      if ($input->getOption($option)) {
-        $options[$option] = $input->getOption($option);
-      }
-    }
-    return $options;
-  }
 
   /**
    * Executes a single migration. If the --execute-dependencies option was
@@ -134,7 +125,9 @@ class ImportCommand extends Command {
       $manager = \Drupal::service('plugin.manager.config_entity_migration');//TODO inject
       $required_migrations = $manager->createInstances($requiredIds);
       $dependency_options = array_merge($options, ['is_dependency' => TRUE]);
-      array_walk($required_migrations, [$this,'executeMigration'], $dependency_options);
+      array_walk($required_migrations,
+                 [$this, 'executeMigration'],
+                 $dependency_options);
     }
     if (!empty($options['force'])) {
       $migration->set('requirements', []);

@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\migrate_tools;
+namespace Drupal\migrate_console_tools;
 
 use Drupal\Console\Style\DrupalStyle;
 use Drupal\migrate\MigrateMessageInterface;
@@ -9,6 +9,7 @@ class ConsoleLogMigrateMessage implements MigrateMessageInterface {
 
   /** @var  DrupalStyle */
   private $io;
+
   /**
    * DrushLogMigrateMessage constructor.
    */

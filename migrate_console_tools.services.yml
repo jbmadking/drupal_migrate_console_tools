@@ -1,0 +1,37 @@
+services:
+  migrate_console_tools.migrate_status:
+    class: Drupal\migrate_console_tools\Command\StatusCommand
+    arguments: []
+    tags:
+      - { name: drupal.command }
+
+  migrate_console_tools.migrate_import:
+    class: Drupal\migrate_console_tools\Command\ImportCommand
+    arguments: []
+    tags:
+      - { name: drupal.command }
+
+  migrate_console_tools.migrate_reset-status:
+    class: Drupal\migrate_console_tools\Command\ResetCommand
+    arguments: []
+    tags:
+      - { name: drupal.command }
+
+  migrate_console_tools.migrate_stop:
+    class: Drupal\migrate_console_tools\Command\StopCommand
+    arguments: []
+    tags:
+      - { name: drupal.command }
+
+  migrate_console_tools.migrate_messages:
+    class: Drupal\migrate_console_tools\Command\MessagesCommand
+    arguments: []
+    tags:
+      - { name: drupal.command }
+
+  migrate_console_tools.migrate_rollback:
+    class: Drupal\migrate_console_tools\Command\RollbackCommand
+    arguments: []
+    tags:
+      - { name: drupal.command }
+

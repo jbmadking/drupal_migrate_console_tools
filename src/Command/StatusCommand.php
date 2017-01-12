@@ -1,8 +1,8 @@
 <?php
 
-namespace Drupal\migrate_tools\Command;
+namespace Drupal\migrate_console_tools\Command;
 
-use Drupal\Component\Utility\Unicode;
+
 use Drupal\Console\Command\Shared\ContainerAwareCommandTrait;
 use Drupal\Console\Style\DrupalStyle;
 use Drupal\migrate\Plugin\MigrateIdMapInterface;

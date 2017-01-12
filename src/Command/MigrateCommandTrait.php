@@ -6,7 +6,7 @@
  * Time: 20:18
  */
 
-namespace Drupal\migrate_tools\Command;
+namespace Drupal\migrate_console_tools\Command;
 
 use Drupal\Component\Utility\Unicode;
 use Symfony\Component\Console\Input\InputInterface;
@@ -18,6 +18,21 @@ use Symfony\Component\Console\Input\InputOption;
  * @package Drupal\migrate_tools\Command
  */
 trait MigrateCommandTrait {
+
+
+  protected function buildOptionList(InputInterface $input,
+                                     array $inputOptions) {
+
+    $options = [];
+    foreach ($inputOptions as $option) {
+      if ($input->getOption($option)) {
+        $options[$option] = $input->getOption($option);
+      } else {
+        $options[$option] = NULL;
+      }
+    }
+    return $options;
+  }
 
   /**
    *
@@ -154,7 +169,7 @@ trait MigrateCommandTrait {
       $filtered_migrations = [];
       foreach ($values as $search_value) {
         /**
-         * @var string             $id
+         * @var string $id
          * @var MigrationInterface $migration
          */
         foreach ($matchedMigrations as $id => $migration) {
