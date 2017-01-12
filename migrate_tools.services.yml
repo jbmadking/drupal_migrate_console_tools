@@ -5,3 +5,9 @@ services:
     tags:
       - { name: drupal.command }
 
+  migrate_tools.migrate_import:
+    class: Drupal\migrate_tools\Command\ImportCommand
+    arguments: []
+    tags:
+      - { name: drupal.command }
+
