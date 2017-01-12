@@ -7,6 +7,7 @@ use Drupal\Console\Style\DrupalStyle;
 use Drupal\migrate\Plugin\MigrationInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -28,6 +29,11 @@ class ResetCommand extends Command {
       ->setName('migrate:reset')
       ->setDescription($this->trans('commands.migrate.reset-status.description'));
     $this->addCommonArguments();
+    $this->addCommonOptions();
+    $this->addOption('all',
+                     '',
+                     InputOption::VALUE_NONE,
+                     'Process all migrations.');
   }
 
   /**
@@ -37,29 +43,40 @@ class ResetCommand extends Command {
   protected function execute(InputInterface $input, OutputInterface $output) {
     $io = new DrupalStyle($input, $output);
 
-    $migrationIds = $this->getMigrationIds($input);
+    $options = $this->buildOptionList($input,
+                                      ['group', 'all']);
 
-    foreach ($migrationIds as $migrationId) {
-      $this->processReset($migrationId, $io);
+    $migrationIds = $this->migrationList($input);
+
+    if (!$options['all'] && !$options['group'] && empty($migrationIds)
+    ) {
+      $io->warning('You must specify --all, --group, or one or more migration names separated by commas');
+      return;
     }
 
+    foreach ($migrationIds as $migrationId) {
+      foreach ($migrationId as $migration) {
+        $this->processReset($migration, $io);
+      }
+    }
     // $io->info($this->trans('commands.migrate.reset-status.messages.success'));
   }
 
-  private function processReset($migrationId, DrupalStyle $io) {
-    /** @var MigrationInterface $migration */
-    $migration = \Drupal::service('plugin.manager.migration')
-                        ->createInstance($migrationId);//TODO - di
+  /**
+   * @param MigrationInterface                $migration
+   * @param \Drupal\Console\Style\DrupalStyle $io
+   */
+  private function processReset($migration, DrupalStyle $io) {
     if ($migration) {
       $status = $migration->getStatus();
       if ($status === MigrationInterface::STATUS_IDLE) {
-        $io->warning("Migration {$migrationId} is already Idle");
+        $io->note("Migration {$migration->id()} is already Idle");
       } else {
         $migration->setStatus(MigrationInterface::STATUS_IDLE);
-        $io->success("Migration {$migrationId} reset to Idle");
+        $io->success("Migration {$migration->id()} reset to Idle");
       }
     } else {
-      $io->error("Migration {$migrationId} does not exist");
+      $io->error("Migration {$migration->id()} does not exist");
     }
 
   }

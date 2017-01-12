@@ -9,6 +9,7 @@
 namespace Drupal\migrate_console_tools\Command;
 
 use Drupal\Component\Utility\Unicode;
+use Drupal\migrate\Plugin\MigrationInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 
@@ -20,6 +21,11 @@ use Symfony\Component\Console\Input\InputOption;
 trait MigrateCommandTrait {
 
 
+  /**
+   * @param \Symfony\Component\Console\Input\InputInterface $input
+   * @param array                                           $inputOptions
+   * @return array
+   */
   protected function buildOptionList(InputInterface $input,
                                      array $inputOptions) {
 
@@ -169,7 +175,7 @@ trait MigrateCommandTrait {
       $filtered_migrations = [];
       foreach ($values as $search_value) {
         /**
-         * @var string $id
+         * @var string             $id
          * @var MigrationInterface $migration
          */
         foreach ($matchedMigrations as $id => $migration) {
@@ -177,12 +183,10 @@ trait MigrateCommandTrait {
           $configured_values = (array) $migration->get($property);
           $configured_id = (in_array($search_value, $configured_values)) ?
             $search_value : 'default';
-          if (empty($search_value) || empty($migrationIds) ||
-              $search_value === $configured_id ||
+          if (empty($search_value) || $search_value === $configured_id ||
               in_array(Unicode::strtolower($id), $migrationIds, FALSE)
           ) {
             $filtered_migrations[$id] = $migration;
-
           }
         }
       }

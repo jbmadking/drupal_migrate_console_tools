@@ -44,9 +44,13 @@ class StopCommand extends Command {
     }
 
 
-    $io->info($this->trans('commands.migrate.stop.messages.success'));
+    // $io->info($this->trans('commands.migrate.stop.messages.success'));
   }
 
+  /**
+   * @param                                   $migrationId
+   * @param \Drupal\Console\Style\DrupalStyle $io
+   */
   private function processStop($migrationId, DrupalStyle $io) {
 
     /** @var MigrationInterface $migration */

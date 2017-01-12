@@ -56,7 +56,7 @@ class StatusCommand extends Command {
       $this->processGroup($groupId, $migration_list, $nameOnly, $io);
     }
 
-    $io->info($this->trans('commands.migrate.status.messages.success'));
+    // $io->info($this->trans('commands.migrate.status.messages.success'));
   }
 
   /**

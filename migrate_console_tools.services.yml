@@ -35,3 +35,9 @@ services:
     tags:
       - { name: drupal.command }
 
+  migrate_console_tools.migrate_fields-source:
+    class: Drupal\migrate_console_tools\Command\FieldsSourceCommand
+    arguments: []
+    tags:
+      - { name: drupal.command }
+

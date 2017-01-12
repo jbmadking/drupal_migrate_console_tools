@@ -4,6 +4,7 @@ namespace Drupal\migrate_console_tools\Command;
 
 use Drupal\Console\Command\Shared\ContainerAwareCommandTrait;
 use Drupal\Console\Style\DrupalStyle;
+use Drupal\migrate\MigrateMessageInterface;
 use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\migrate_console_tools\ConsoleLogMigrateMessage;
 use Drupal\migrate_console_tools\MigrateExecutable;
@@ -100,7 +101,7 @@ class ImportCommand extends Command {
       array_walk($migration_list, [$this, 'executeMigration'], $options);
     }
 
-    $io->info($this->trans('commands.migrate.import.messages.success'));
+    //$io->info($this->trans('commands.migrate.import.messages.success'));
   }
 
 
@@ -110,15 +111,16 @@ class ImportCommand extends Command {
    *
    * @param \Drupal\migrate\Plugin\MigrationInterface $migration
    *  The migration to execute.
-   * @param string                                    $migration_id
+   * @param string                                    $migrationId
    *  The migration ID (not used, just an artifact of array_walk()).
    * @param array                                     $options
    *  Additional options for the migration.
    * @throws \Drupal\migrate\MigrateException
    */
   private function executeMigration(MigrationInterface $migration,
-                                    $migration_id,
+                                    $migrationId,
                                     array $options = []) {
+    /** @var MigrateMessageInterface $log */
     $log = $options['logger'];
     $requiredIds = $migration->get('requirements');
     if (array_key_exists('execute-dependencies', $options) && $requiredIds) {
@@ -136,8 +138,15 @@ class ImportCommand extends Command {
       $migration->getIdMap()->prepareUpdate();
     }
     $executable = new MigrateExecutable($migration, $log, $options);
-    $output = $executable->import();
-
+    try {
+      $executable->import();
+    } catch (\Exception $e) {
+      $log->display("exception when importing {$migrationId} : {$e->getMessage()} : You must clean-up/reset this migration",
+                    'error');
+    } catch (\Throwable $e) {
+      $log->display("exception when importing {$migrationId} : {$e->getMessage()} : You must clean-up/reset this migration",
+                    'error');
+    }
     // drush_op() provides --simulate support
     //drush_op([$executable, 'import']);
   }

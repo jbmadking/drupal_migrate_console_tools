@@ -52,6 +52,8 @@ class RollbackCommand extends Command {
     $options = $this->buildOptionList($input,
                                       ['group', 'tag', 'all', 'feedback']);
 
+    $options['logger'] = new ConsoleLogMigrateMessage($io);
+
     if (!$options['all'] && !$options['group'] && empty($migrationIds) &&
         !$options['tag']
     ) {
@@ -69,16 +71,25 @@ class RollbackCommand extends Command {
     foreach ($migrations as $group_id => $migration_list) {
       // Roll back in reverse order.
       $migration_list = array_reverse($migration_list);
-      foreach ($migration_list as $migration_id => $migration) {
+      foreach ($migration_list as $migrationId => $migration) {
         $executable = new MigrateExecutable($migration,
-                                            new ConsoleLogMigrateMessage($io),
+                                            $options['logger'],
                                             $options);
-        $executable->rollback();
+        try {
+          $executable->rollback();
+        } catch (\Exception $e) {
+          $options['logger']->display("exception when rolling back {$migrationId} : {$e->getMessage()} : You must clean-up/reset this migration",
+                                      'error');
+        } catch (\Throwable $e) {
+          $options['logger']->display("exception when rolling back {$migrationId} : {$e->getMessage()} : You must clean-up/reset this migration",
+                                      'error');
+        }
+
         // drush_op() provides --simulate support.
         //drush_op(array($executable, 'rollback'));
       }
     }
 
-    $io->info($this->trans('commands.migrate.rollback.messages.success'));
+    //$io->info($this->trans('commands.migrate.rollback.messages.success'));
   }
 }
