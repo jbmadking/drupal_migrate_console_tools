@@ -8,12 +8,30 @@
 
 namespace Drupal\migrate_tools\Command;
 
+use Drupal\Component\Utility\Unicode;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 
+/**
+ * Class MigrateCommandTrait
+ *
+ * @package Drupal\migrate_tools\Command
+ */
 trait MigrateCommandTrait {
 
-  protected function addCommonOptions(){
+  /**
+   *
+   */
+  protected function addCommonArguments() {
+    $this->addArgument('migration',
+                       InputOption::VALUE_REQUIRED,
+                       'ID of migration(s) to import. Delimit multiple using commas.');
+  }
+
+  /**
+   *
+   */
+  protected function addCommonOptions() {
     $this->addOption('group',
                      '',
                      InputOption::VALUE_REQUIRED,
@@ -24,9 +42,14 @@ trait MigrateCommandTrait {
                      'Name of the migration tag to list');
   }
 
+  /**
+   * @param \Symfony\Component\Console\Input\InputInterface $input
+   * @return array
+   * @throws \Symfony\Component\Console\Exception\InvalidArgumentException
+   */
   protected function getMigrationIds(InputInterface $input) {
-    return $input->getOption('migration') ?
-      explode(',', $input->getOption('migration')) : [];
+    return $input->getArgument('migration') ?
+      explode(',', $input->getArgument('migration')) : [];
   }
 
   /**
@@ -51,6 +74,10 @@ trait MigrateCommandTrait {
     return isset($migrations) ? $migrations : [];
   }
 
+  /**
+   * @param \Symfony\Component\Console\Input\InputInterface $input
+   * @return array
+   */
   private function getFilter(InputInterface $input) {
     $filter = [];
     $filter['migration_group'] = $input->getOption('group') ?
@@ -60,15 +87,24 @@ trait MigrateCommandTrait {
     return $filter;
   }
 
+  /**
+   * @param $migrationIds
+   * @param $plugins
+   * @return array
+   */
   private function getMatchedMigrations($migrationIds, $plugins) {
     return empty($migrationIds) ? $plugins :
       $this->restrictMigrations($migrationIds, $plugins);
   }
 
+  /**
+   * @param $migrationIds
+   * @param $plugins
+   * @return array
+   */
   private function restrictMigrations($migrationIds, $plugins) {
     $matchedMigrations = [];
     // Get the requested migrations.
-    $migrationIds = explode(',', Unicode::strtolower($migrationIds));
     foreach ($plugins as $id => $migration) {
       if (in_array(Unicode::strtolower($id), $migrationIds)) {
         $matchedMigrations [$id] = $migration;
@@ -77,6 +113,12 @@ trait MigrateCommandTrait {
     return $matchedMigrations;
   }
 
+  /**
+   * @param       $migrationIds
+   * @param array $matchedMigrations
+   * @param       $filter
+   * @return array
+   */
   private function filterMigrations($migrationIds,
                                     array $matchedMigrations,
                                     $filter) {
@@ -96,6 +138,13 @@ trait MigrateCommandTrait {
     return $matchedMigrations;
   }
 
+  /**
+   * @param $migrationIds
+   * @param $matchedMigrations
+   * @param $property
+   * @param $values
+   * @return array
+   */
   private function runFilter($migrationIds,
                              $matchedMigrations,
                              $property,
@@ -128,6 +177,10 @@ trait MigrateCommandTrait {
 
   }
 
+  /**
+   * @param $matchedMigrations
+   * @return array
+   */
   private function sortMigrations($matchedMigrations) {
 
     $migrations = [];
@@ -139,6 +192,10 @@ trait MigrateCommandTrait {
     return $migrations;
   }
 
+  /**
+   * @param $migration
+   * @return string
+   */
   private function getConfiguredGroupId($migration) {
     return empty($migration->get('migration_group')) ? 'default' :
       $migration->get('migration_group');

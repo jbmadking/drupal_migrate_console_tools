@@ -34,15 +34,12 @@ class StatusCommand extends Command {
       ->setName('migrate:status')
       ->setDescription($this->trans('commands.migrate.status.description'));
 
+    $this->addCommonArguments();
     $this->addCommonOptions();
     $this->addOption('names-only',
                      '',
                      InputOption::VALUE_NONE,
                      'Only return names, not all the details (faster)');
-    $this->addOption('migration',
-                     '',
-                     InputOption::VALUE_OPTIONAL,
-                     'Restrict to a comma-separated list of migrations.');
   }
 
   /**

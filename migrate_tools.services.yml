@@ -11,3 +11,9 @@ services:
     tags:
       - { name: drupal.command }
 
+  migrate_tools.migrate_reset-status:
+    class: Drupal\migrate_tools\Command\ResetCommand
+    arguments: []
+    tags:
+      - { name: drupal.command }
+

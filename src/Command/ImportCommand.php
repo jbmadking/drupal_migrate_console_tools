@@ -30,6 +30,7 @@ class ImportCommand extends Command {
     $this
       ->setName('migrate:import')
       ->setDescription($this->trans('commands.migrate.import.description'));
+    $this->addCommonArguments();
     $this->addCommonOptions();
     $this->addOption('all',
                      '',
@@ -59,10 +60,6 @@ class ImportCommand extends Command {
                      '',
                      InputOption::VALUE_NONE,
                      'Execute all dependent migrations first');
-    $this->addOption('migration',
-                     '',
-                     InputOption::VALUE_REQUIRED,
-                     'ID of migration(s) to import. Delimit multiple using commas.');
   }
 
   /**
@@ -81,9 +78,10 @@ class ImportCommand extends Command {
       return;
     }
 
-    $migrations = $this->migrationList($migrationNames);
+    $migrations = $this->migrationList($input);
     if (empty($migrations)) {
-      drush_log(dt('No migrations found.'), 'error');
+      $io->warning('No migrations found');
+      return;
     }
 
     $options = $this->buildOptionList($input);
@@ -131,12 +129,12 @@ class ImportCommand extends Command {
                                     $migration_id,
                                     array $options = []) {
     $log = $options['logger'];
-    $required_IDS = $migration->get('requirements');
-    if (array_key_exists('execute-dependencies', $options) && $required_IDS) {
+    $requiredIds = $migration->get('requirements');
+    if (array_key_exists('execute-dependencies', $options) && $requiredIds) {
       $manager = \Drupal::service('plugin.manager.config_entity_migration');//TODO inject
-      $required_migrations = $manager->createInstances($required_IDS);
+      $required_migrations = $manager->createInstances($requiredIds);
       $dependency_options = array_merge($options, ['is_dependency' => TRUE]);
-      array_walk($required_migrations, __FUNCTION__, $dependency_options);
+      array_walk($required_migrations, [$this,'executeMigration'], $dependency_options);
     }
     if (!empty($options['force'])) {
       $migration->set('requirements', []);
@@ -145,7 +143,8 @@ class ImportCommand extends Command {
       $migration->getIdMap()->prepareUpdate();
     }
     $executable = new MigrateExecutable($migration, $log, $options);
-    $executable->import();
+    $output = $executable->import();
+
     // drush_op() provides --simulate support
     //drush_op([$executable, 'import']);
   }
