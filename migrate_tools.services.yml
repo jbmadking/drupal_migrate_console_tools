@@ -1,0 +1,7 @@
+services:
+  migrate_tools.migrate_status:
+    class: Drupal\migrate_tools\Command\StatusCommand
+    arguments: []
+    tags:
+      - { name: drupal.command }
+
