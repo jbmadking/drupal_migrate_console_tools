@@ -10,7 +10,7 @@
         }
     ],
     "require": {
-        "drupal/drupal": ">=8.3",
+        "drupal/drupal": ">=8.2",
         "roave/security-advisories":"dev-master"
     }
 }
