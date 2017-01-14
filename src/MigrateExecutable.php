@@ -17,6 +17,11 @@ use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\migrate_plus\Event\MigrateEvents as MigratePlusEvents;
 use Drupal\migrate_plus\Event\MigratePrepareRowEvent;
 
+/**
+ * Class MigrateExecutable
+ *
+ * @package Drupal\migrate_console_tools
+ */
 class MigrateExecutable extends MigrateExecutableBase {
 
   /**
@@ -40,8 +45,9 @@ class MigrateExecutable extends MigrateExecutableBase {
   protected $deleteCounter = 0;
 
   /**
-   * Maximum number of items to process in this migration. 0 indicates no limit
-   * is to be applied.
+   * Maximum number of items to process in this migration.
+   *
+   * 0 indicates no limit is to be applied.
    *
    * @var int
    */

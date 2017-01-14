@@ -30,14 +30,13 @@ class FieldsSourceCommand extends Command {
       ->setDescription($this->trans('commands.migrate.fields-source.description'));
     $this->addCommonArguments();
     $this->addCommonOptions();
-    $this->addOption('all',
-                     '',
-                     InputOption::VALUE_NONE,
-                     'Process all migrations.');
+    $this->addAllOption();
   }
 
   /**
    * {@inheritdoc}
+   *
+   * @throws \Symfony\Component\Console\Exception\InvalidArgumentException
    */
   protected function execute(InputInterface $input, OutputInterface $output) {
     $io = new DrupalStyle($input, $output);

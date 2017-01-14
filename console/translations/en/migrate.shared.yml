@@ -1,0 +1,6 @@
+options:
+  all: 'Process all migrations.'
+  group: 'A comma-separated list of migration groups to list'
+  tag: 'Name of the migration tag to list'
+arguments:
+  migration: 'ID of migration(s) to import. Delimit multiple using commas.'

@@ -24,6 +24,7 @@ class StatusCommand extends Command {
 
   /**
    * {@inheritdoc}
+   *
    * @throws \Symfony\Component\Console\Exception\InvalidArgumentException
    */
   protected function configure() {
@@ -36,11 +37,12 @@ class StatusCommand extends Command {
     $this->addOption('names-only',
                      '',
                      InputOption::VALUE_NONE,
-                     'Only return names, not all the details (faster)');
+                     $this->trans('commands.migrate.status.options.names-only'));
   }
 
   /**
    * {@inheritdoc}
+   *
    * @throws \Symfony\Component\Console\Exception\InvalidArgumentException
    */
   protected function execute(InputInterface $input, OutputInterface $output) {
@@ -57,15 +59,15 @@ class StatusCommand extends Command {
   }
 
   /**
-   * @param       $groupId
-   * @param array $migrationList
-   * @param       $nameOnly
-   * @param       $io
+   * @param string      $groupId
+   * @param array       $migrationList
+   * @param string      $nameOnly
+   * @param DrupalStyle $io
    */
   private function processGroup($groupId,
                                 array $migrationList,
                                 $nameOnly,
-                                $io) {
+                                DrupalStyle $io) {
 
     call_user_func_array([$io, 'table'],
                          $nameOnly ?
@@ -75,8 +77,8 @@ class StatusCommand extends Command {
   }
 
   /**
-   * @param       $groupId
-   * @param array $migrationList
+   * @param string $groupId
+   * @param array  $migrationList
    * @return array
    */
   private function processNameOnly($groupId, array $migrationList) {
@@ -95,7 +97,7 @@ class StatusCommand extends Command {
   }
 
   /**
-   * @param $groupId
+   * @param string $groupId
    * @return string
    */
   private function getGroupName($groupId) {
@@ -104,8 +106,8 @@ class StatusCommand extends Command {
   }
 
   /**
-   * @param $groupId
-   * @param $migrationList
+   * @param string $groupId
+   * @param array  $migrationList
    * @return array
    */
   private function processFullInfo($groupId, array $migrationList) {
@@ -122,7 +124,7 @@ class StatusCommand extends Command {
   }
 
   /**
-   * @param $groupId
+   * @param string $groupId
    * @return string[]
    */
   private function getHeader($groupId) {
@@ -139,7 +141,7 @@ class StatusCommand extends Command {
   }
 
   /**
-   * @param                                           $migrationId
+   * @param string                                    $migrationId
    * @param \Drupal\migrate\Plugin\MigrationInterface $migration
    * @return array
    */
@@ -194,7 +196,7 @@ class StatusCommand extends Command {
   private function getLastImported(MigrationInterface $migration) {
     $store = \Drupal::keyValue('migrate_last_imported');
     $lastImported = $store->get($migration->id(), FALSE);
-    $date_formatter = \Drupal::service('date.formatter');//TODO - inject this
+    $date_formatter = \Drupal::service('date.formatter'); //TODO - inject this
     return $lastImported ? $date_formatter->format($lastImported / 1000,
                                                    'custom',
                                                    'Y-m-d H:i:s') : '';

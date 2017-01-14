@@ -21,6 +21,7 @@ class StopCommand extends Command {
 
   /**
    * {@inheritdoc}
+   *
    * @throws \Symfony\Component\Console\Exception\InvalidArgumentException
    */
   protected function configure() {
@@ -32,6 +33,7 @@ class StopCommand extends Command {
 
   /**
    * {@inheritdoc}
+   *
    * @throws \Symfony\Component\Console\Exception\InvalidArgumentException
    */
   protected function execute(InputInterface $input, OutputInterface $output) {
@@ -46,7 +48,7 @@ class StopCommand extends Command {
   }
 
   /**
-   * @param                                   $migrationId
+   * @param string                            $migrationId
    * @param \Drupal\Console\Style\DrupalStyle $io
    */
   private function processStop($migrationId, DrupalStyle $io) {
@@ -60,12 +62,15 @@ class StopCommand extends Command {
         case MigrationInterface::STATUS_IDLE:
           $io->warning("Migration {$migrationId} is Idle");
           break;
+
         case MigrationInterface::STATUS_DISABLED:
           $io->warning("Migration {$migrationId} is Disabled");
           break;
+
         case MigrationInterface::STATUS_STOPPING:
           $io->warning("Migration {$migrationId} is already stopping");
           break;
+
         default:
           $migration->interruptMigration(MigrationInterface::RESULT_STOPPED);
           $io->warning("Migration {$migrationId} requested to stop");
@@ -74,6 +79,6 @@ class StopCommand extends Command {
     } else {
       $io->error("Migration {$migrationId} does not exist");
     }
-
   }
+
 }

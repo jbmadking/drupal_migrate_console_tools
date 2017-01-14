@@ -1,5 +1,4 @@
-description: 'Drupal Console generated command.'
-options: {}
+description: 'View any messages associated with a migration.'
+options:
+  csv: 'Print as a csv'
 arguments: {}
-messages:
-    success: 'I am a new generated command.'

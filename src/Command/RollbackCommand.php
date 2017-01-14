@@ -31,14 +31,11 @@ class RollbackCommand extends Command {
       ->setDescription($this->trans('commands.migrate.rollback.description'));
     $this->addCommonArguments();
     $this->addCommonOptions();
-    $this->addOption('all',
-                     '',
-                     InputOption::VALUE_NONE,
-                     'Process all migrations.');
+    $this->addAllOption();
     $this->addOption('feedback',
                      '',
                      InputOption::VALUE_REQUIRED,
-                     'Frequency of progress messages, in items processed');
+                     $this->trans('commands.migrate.rollback.option.feedback'));
   }
 
   /**

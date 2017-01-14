@@ -29,7 +29,7 @@ class MessagesCommand extends Command {
       ->setName('migrate:messages')
       ->setDescription($this->trans('commands.migrate.messages.description'));
     $this->addCommonArguments();
-    $this->addOption('csv', '', InputOption::VALUE_NONE, 'print as a csv');
+    $this->addOption('csv', '', InputOption::VALUE_NONE, $this->trans('commands.migrate.import.messages.csv'));
   }
 
   /**

@@ -31,10 +31,7 @@ class ResetCommand extends Command {
       ->setDescription($this->trans('commands.migrate.reset-status.description'));
     $this->addCommonArguments();
     $this->addCommonOptions();
-    $this->addOption('all',
-                     '',
-                     InputOption::VALUE_NONE,
-                     'Process all migrations.');
+    $this->addAllOption();
   }
 
   /**

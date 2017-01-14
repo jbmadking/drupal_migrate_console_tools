@@ -1,5 +1,3 @@
-description: 'Drupal Console generated command.'
+description: 'Stop an active migration operation.'
 options: {}
 arguments: {}
-messages:
-    success: 'I am a new generated command.'

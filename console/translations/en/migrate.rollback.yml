@@ -1,5 +1,4 @@
-description: 'Drupal Console generated command.'
-options: {}
+description: 'Rollback one or more migrations.'
+options:
+  feedback: 'Frequency of progress messages, in items processed'
 arguments: {}
-messages:
-    success: 'I am a new generated command.'

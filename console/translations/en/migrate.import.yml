@@ -1,5 +1,11 @@
-description: 'Drupal Console generated command.'
-options: {}
+description: 'Perform one or more migration processes.'
+options:
+  limit: 'Limit on the number of items to process in each migration'
+  feedback: 'Frequency of progress messages, in items processed'
+  idlist: 'Comma-separated list of IDs to import'
+  update: 'In addition to processing unprocessed items from the source, update previously-imported items with the current data'
+  force: 'Force an operation to run, even if all dependencies are not satisfied'
+  execute-dependencies: 'Execute all dependent migrations first'
 arguments: {}
 messages:
     success: 'I am a new generated command.'

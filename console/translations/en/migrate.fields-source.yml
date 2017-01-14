@@ -1,4 +1,4 @@
-description: 'Drupal Console generated command.'
+description: 'List the fields available for mapping in a source.'
 options: {}
 arguments: {}
 messages:

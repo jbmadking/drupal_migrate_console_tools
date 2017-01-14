@@ -1,5 +1,3 @@
-description: 'Drupal Console generated command.'
+description: 'Reset a active migration status to idle.'
 options: {}
 arguments: {}
-messages:
-    success: 'I am a new generated command.'

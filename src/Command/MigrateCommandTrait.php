@@ -46,7 +46,7 @@ trait MigrateCommandTrait {
   protected function addCommonArguments() {
     $this->addArgument('migration',
                        InputOption::VALUE_REQUIRED,
-                       'ID of migration(s) to import. Delimit multiple using commas.');
+                       $this->trans('commands.migrate.shared.arguments.migration'));
   }
 
   /**
@@ -56,11 +56,21 @@ trait MigrateCommandTrait {
     $this->addOption('group',
                      '',
                      InputOption::VALUE_REQUIRED,
-                     'A comma-separated list of migration groups to list');
+                     $this->trans('commands.migrate.shared.options.group'));
     $this->addOption('tag',
                      '',
                      InputOption::VALUE_REQUIRED,
-                     'Name of the migration tag to list');
+                     $this->trans('commands.migrate.shared.options.tag'));
+  }
+
+  /**
+   *
+   */
+  protected function addAllOption() {
+    $this->addOption('all',
+                     '',
+                     InputOption::VALUE_NONE,
+                     $this->trans('commands.migrate.shared.options.all'));
   }
 
   /**

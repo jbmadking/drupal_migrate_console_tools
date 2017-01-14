@@ -35,34 +35,31 @@ class ImportCommand extends Command {
       ->setDescription($this->trans('commands.migrate.import.description'));
     $this->addCommonArguments();
     $this->addCommonOptions();
-    $this->addOption('all',
-                     '',
-                     InputOption::VALUE_NONE,
-                     'Process all migrations.');
+    $this->addAllOption();
     $this->addOption('limit',
                      '',
                      InputOption::VALUE_REQUIRED,
-                     'Limit on the number of items to process in each migration');
+                     $this->trans('commands.migrate.import.options.limit'));
     $this->addOption('feedback',
                      '',
                      InputOption::VALUE_REQUIRED,
-                     'Frequency of progress messages, in items processed');
+                     $this->trans('commands.migrate.import.options.feedback'));
     $this->addOption('idlist',
                      '',
                      InputOption::VALUE_REQUIRED,
-                     'Comma-separated list of IDs to import');
+                     $this->trans('commands.migrate.import.options.idlist'));
     $this->addOption('update',
                      '',
                      InputOption::VALUE_NONE,
-                     'In addition to processing unprocessed items from the source, update previously-imported items with the current data');
+                     $this->trans('commands.migrate.import.options.update'));
     $this->addOption('force',
                      '',
                      InputOption::VALUE_NONE,
-                     'Force an operation to run, even if all dependencies are not satisfied');
+                     $this->trans('commands.migrate.import.options.force'));
     $this->addOption('execute-dependencies',
                      '',
                      InputOption::VALUE_NONE,
-                     'Execute all dependent migrations first');
+                     $this->trans('commands.migrate.import.options.execute-dependencies'));
   }
 
   /**
@@ -132,6 +129,7 @@ class ImportCommand extends Command {
    *                                                               options for
    *                                                               the
    *                                                               migration.
+   *
    * @throws \Drupal\migrate\MigrateException
    */
   private function executeMigration(MigrationInterface $migration,

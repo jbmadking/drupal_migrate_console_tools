@@ -1,5 +1,4 @@
-description: 'Drupal Console generated command.'
-options: {}
+description: 'List all migrations with current status'
+options:
+  names-only: 'Only return names, not all the details (faster)'
 arguments: {}
-messages:
-    success: 'I am a new generated command.'
