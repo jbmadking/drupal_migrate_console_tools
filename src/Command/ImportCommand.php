@@ -26,6 +26,8 @@ class ImportCommand extends Command {
 
   /**
    * {@inheritdoc}
+   *
+   * @throws \Symfony\Component\Console\Exception\InvalidArgumentException
    */
   protected function configure() {
     $this
@@ -65,10 +67,11 @@ class ImportCommand extends Command {
 
   /**
    * {@inheritdoc}
+   *
+   * @throws \Symfony\Component\Console\Exception\InvalidArgumentException
    */
   protected function execute(InputInterface $input, OutputInterface $output) {
     $io = new DrupalStyle($input, $output);
-
 
     $migrationNames = $this->getMigrationIds($input);
 
@@ -85,8 +88,9 @@ class ImportCommand extends Command {
                                         'all',
                                       ]);
 
-
-    if ($this->testForRequiredKeys(['group','all','tag'],$options) && empty($migrationNames)) {
+    if (empty($migrationNames) &&
+        $this->testForRequiredKeys(['group', 'all', 'tag'], $options)
+    ) {
       $io->error('You must specify --all, --group, --tag or one or more migration names separated by commas');
       return;
     }
@@ -106,17 +110,28 @@ class ImportCommand extends Command {
 
   }
 
-
   /**
-   * Executes a single migration. If the --execute-dependencies option was
+   * Executes a single migration.
+   *
+   * If the --execute-dependencies option was
    * given, the migration's dependencies will also be executed first.
    *
    * @param \Drupal\migrate\Plugin\MigrationInterface $migration
-   *  The migration to execute.
+   *                                                               The
+   *                                                               migration to
+   *                                                               execute.
    * @param string                                    $migrationId
-   *  The migration ID (not used, just an artifact of array_walk()).
+   *                                                               The
+   *                                                               migration ID
+   *                                                               (not used,
+   *                                                               just an
+   *                                                               artifact of
+   *                                                               array_walk()).
    * @param array                                     $options
-   *  Additional options for the migration.
+   *                                                               Additional
+   *                                                               options for
+   *                                                               the
+   *                                                               migration.
    * @throws \Drupal\migrate\MigrateException
    */
   private function executeMigration(MigrationInterface $migration,

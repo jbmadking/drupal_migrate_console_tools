@@ -23,6 +23,7 @@ class RollbackCommand extends Command {
 
   /**
    * {@inheritdoc}
+   * @throws \Symfony\Component\Console\Exception\InvalidArgumentException
    */
   protected function configure() {
     $this
@@ -43,6 +44,7 @@ class RollbackCommand extends Command {
   /**
    * {@inheritdoc}
    * @throws \Drupal\migrate\MigrateException
+   * @throws \Symfony\Component\Console\Exception\InvalidArgumentException
    */
   protected function execute(InputInterface $input, OutputInterface $output) {
     $io = new DrupalStyle($input, $output);
@@ -54,7 +56,8 @@ class RollbackCommand extends Command {
 
     $options['logger'] = new ConsoleLogMigrateMessage($io);
 
-    if (!$this->testForRequiredKeys(['all', 'group', 'tag'], $options) && empty($migrationIds)
+    if (empty($migrationIds) &&
+        !$this->testForRequiredKeys(['all', 'group', 'tag'], $options)
     ) {
       $io->warning('You must specify --all, --group, or one or more migration names separated by commas');
       return;

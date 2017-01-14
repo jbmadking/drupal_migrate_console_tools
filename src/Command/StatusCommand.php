@@ -2,7 +2,6 @@
 
 namespace Drupal\migrate_console_tools\Command;
 
-
 use Drupal\Console\Command\Shared\ContainerAwareCommandTrait;
 use Drupal\Console\Style\DrupalStyle;
 use Drupal\migrate\Plugin\MigrateIdMapInterface;
@@ -42,6 +41,7 @@ class StatusCommand extends Command {
 
   /**
    * {@inheritdoc}
+   * @throws \Symfony\Component\Console\Exception\InvalidArgumentException
    */
   protected function execute(InputInterface $input, OutputInterface $output) {
     $io = new DrupalStyle($input, $output);
@@ -108,7 +108,7 @@ class StatusCommand extends Command {
    * @param $migrationList
    * @return array
    */
-  private function processFullInfo($groupId, $migrationList) {
+  private function processFullInfo($groupId, array $migrationList) {
 
     $rows = [];
     /**
@@ -199,6 +199,5 @@ class StatusCommand extends Command {
                                                    'custom',
                                                    'Y-m-d H:i:s') : '';
   }
-
 
 }

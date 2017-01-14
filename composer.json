@@ -1,16 +1,19 @@
 {
-    "name": "drupal/migrate_console_tools",
-    "description": "Port of migrate_tools drush commands to Drupal Console",
-    "type": "drupal-module",
-    "license": "GPL-2.0+",
-    "authors": [
-        {
-            "name": "Tom Whiston",
-            "email": "tom.whiston@pwc-digital.ch",
-            "role": "Developer"
-        }
-    ],
-    "require": {
-        "roave/security-advisories":"dev-master"
+  "name": "drupal/migrate_console_tools",
+  "description": "Port of migrate_tools drush commands to Drupal Console",
+  "type": "drupal-module",
+  "license": "GPL-2.0+",
+  "authors": [
+    {
+      "name": "Tom Whiston",
+      "email": "tom.whiston@pwc-digital.ch",
+      "role": "Developer"
     }
+  ],
+  "require": {
+    "roave/security-advisories": "dev-master"
+  },
+  "require-dev": {
+    "drupal/console": "*"
+  }
 }

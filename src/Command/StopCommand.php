@@ -43,7 +43,6 @@ class StopCommand extends Command {
       $this->processStop($migrationId, $io);
     }
 
-
   }
 
   /**

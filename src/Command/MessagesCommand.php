@@ -34,6 +34,7 @@ class MessagesCommand extends Command {
 
   /**
    * {@inheritdoc}
+   * @throws \Symfony\Component\Console\Exception\InvalidArgumentException
    */
   protected function execute(InputInterface $input, OutputInterface $output) {
     $io = new DrupalStyle($input, $output);

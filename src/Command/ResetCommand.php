@@ -23,6 +23,7 @@ class ResetCommand extends Command {
 
   /**
    * {@inheritdoc}
+   * @throws \Symfony\Component\Console\Exception\InvalidArgumentException
    */
   protected function configure() {
     $this
@@ -48,7 +49,8 @@ class ResetCommand extends Command {
 
     $migrationIds = $this->migrationList($input);
 
-    if (!$this->testForRequiredKeys(['all', 'group'], $options) && empty($migrationIds)
+    if (empty($migrationIds) &&
+        !$this->testForRequiredKeys(['all', 'group'], $options)
     ) {
       $io->warning('You must specify --all, --group, or one or more migration names separated by commas');
       return;

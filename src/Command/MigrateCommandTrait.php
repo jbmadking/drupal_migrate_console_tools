@@ -20,11 +20,11 @@ use Symfony\Component\Console\Input\InputOption;
  */
 trait MigrateCommandTrait {
 
-
   /**
    * @param \Symfony\Component\Console\Input\InputInterface $input
-   * @param string[]                                           $inputOptions
+   * @param string[]                                        $inputOptions
    * @return array
+   * @throws \Symfony\Component\Console\Exception\InvalidArgumentException
    */
   protected function buildOptionList(InputInterface $input,
                                      array $inputOptions) {
@@ -63,40 +63,46 @@ trait MigrateCommandTrait {
                      'Name of the migration tag to list');
   }
 
-
   /**
    * @param        string $name
-   * @param string   $shortcut
-   * @param null   $mode
-   * @param string $description
-   * @param null   $default
+   * @param string        $shortcut
+   * @param null          $mode
+   * @param string        $description
+   * @param null          $default
    * @return mixed
    *
    * Ensure that this trait is used with a command
    */
-  abstract public function addOption($name, $shortcut = null, $mode = null, $description = '', $default = null);
+  abstract public function addOption($name,
+                                     $shortcut = NULL,
+                                     $mode = NULL,
+                                     $description = '',
+                                     $default = NULL);
 
   /**
    * @param        string $name
-   * @param null   $mode
-   * @param string $description
-   * @param null   $default
+   * @param null          $mode
+   * @param string        $description
+   * @param null          $default
    * @return mixed
    *
    * Ensure that this trait is used with a command
    */
-  abstract public function addArgument($name, $mode = null, $description = '', $default = null);
+  abstract public function addArgument($name,
+                                       $mode = NULL,
+                                       $description = '',
+                                       $default = NULL);
 
   /**
    * @param string[] $keys
-   * @param array $options
+   * @param array    $options
    * @return bool
    *
    * Test for keys that you need, and return as soon as one is not found
    */
-  protected function testForRequiredKeys(array $keys, array $options){
+  protected function testForRequiredKeys(array $keys, array $options) {
     foreach ($keys as $key) {
-      if(!array_key_exists($key,$options)){
+      if (!array_key_exists($key, $options)) {
         //return false as soon as a missing key is found
         return FALSE;
       }
@@ -117,6 +123,7 @@ trait MigrateCommandTrait {
   /**
    * @param \Symfony\Component\Console\Input\InputInterface $input
    * @return array
+   * @throws \Symfony\Component\Console\Exception\InvalidArgumentException
    */
   protected function migrationList(InputInterface $input) {
     // Filter keys must match the migration configuration property name.
@@ -133,12 +140,13 @@ trait MigrateCommandTrait {
 
     $migrations = $this->sortMigrations($matchedMigrations);
 
-    return isset($migrations) ? $migrations : [];
+    return $migrations !== NULL ? $migrations : [];
   }
 
   /**
    * @param \Symfony\Component\Console\Input\InputInterface $input
    * @return array
+   * @throws \Symfony\Component\Console\Exception\InvalidArgumentException
    */
   private function getFilter(InputInterface $input) {
     $filter = [];
@@ -150,21 +158,21 @@ trait MigrateCommandTrait {
   }
 
   /**
-   * @param $migrationIds
-   * @param $plugins
+   * @param       $migrationIds
+   * @param array $plugins
    * @return array
    */
-  private function getMatchedMigrations($migrationIds, $plugins) {
+  private function getMatchedMigrations($migrationIds, array $plugins) {
     return empty($migrationIds) ? $plugins :
       $this->restrictMigrations($migrationIds, $plugins);
   }
 
   /**
-   * @param $migrationIds
-   * @param $plugins
+   * @param       $migrationIds
+   * @param array $plugins
    * @return array
    */
-  private function restrictMigrations($migrationIds, $plugins) {
+  private function restrictMigrations($migrationIds, array $plugins) {
     $matchedMigrations = [];
     // Get the requested migrations.
     foreach ($plugins as $id => $migration) {
@@ -183,7 +191,7 @@ trait MigrateCommandTrait {
    */
   private function filterMigrations($migrationIds,
                                     array $matchedMigrations,
-                                    $filter) {
+                                    array $filter) {
     // Filters the matched migrations if a group or a tag has been input.
     if (!empty($filter['migration_group']) ||
         !empty($filter['migration_tags'])
@@ -201,16 +209,16 @@ trait MigrateCommandTrait {
   }
 
   /**
-   * @param $migrationIds
-   * @param $matchedMigrations
-   * @param $property
-   * @param $values
+   * @param array $migrationIds
+   * @param array $matchedMigrations
+   * @param       $property
+   * @param       $values
    * @return array
    */
-  private function runFilter($migrationIds,
-                             $matchedMigrations,
+  private function runFilter(array $migrationIds,
+                             array $matchedMigrations,
                              $property,
-                             $values) {
+                             array $values) {
 
     if (!empty($values)) {
       $filtered_migrations = [];
@@ -222,7 +230,7 @@ trait MigrateCommandTrait {
         foreach ($matchedMigrations as $id => $migration) {
           // Cast to array because migration_tags can be an array.
           $configured_values = (array) $migration->get($property);
-          $configured_id = (in_array($search_value, $configured_values)) ?
+          $configured_id = in_array($search_value, $configured_values) ?
             $search_value : 'default';
           if (empty($search_value) || $search_value === $configured_id ||
               in_array(Unicode::strtolower($id), $migrationIds, FALSE)
@@ -241,7 +249,7 @@ trait MigrateCommandTrait {
    * @param $matchedMigrations
    * @return array
    */
-  private function sortMigrations($matchedMigrations) {
+  private function sortMigrations(array $matchedMigrations) {
 
     $migrations = [];
     if (!empty($matchedMigrations)) {

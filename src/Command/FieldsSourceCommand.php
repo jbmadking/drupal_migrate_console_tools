@@ -4,7 +4,6 @@ namespace Drupal\migrate_console_tools\Command;
 
 use Drupal\Console\Command\Shared\ContainerAwareCommandTrait;
 use Drupal\Console\Style\DrupalStyle;
-use Drupal\migrate\Plugin\MigrationInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -22,6 +21,8 @@ class FieldsSourceCommand extends Command {
 
   /**
    * {@inheritdoc}
+   *
+   * @throws \Symfony\Component\Console\Exception\InvalidArgumentException
    */
   protected function configure() {
     $this
@@ -43,7 +44,7 @@ class FieldsSourceCommand extends Command {
 
     $migrationIds = $this->migrationList($input);
 
-    /** @var MigrationInterface[] $migration */
+    /** @var \Drupal\migrate\Plugin\MigrationInterface[] $migration */
     foreach ($migrationIds as $type => $migration) {
       $io->block($type);
       foreach ($migration as $plugin) {
@@ -52,9 +53,9 @@ class FieldsSourceCommand extends Command {
         foreach ($source->fields() as $machine_name => $description) {
           $table[] = [strip_tags($description), $machine_name];
         }
-        $io->table(array_shift($table),$table);
+        $io->table(array_shift($table), $table);
       }
     }
-
   }
+
 }
