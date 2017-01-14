@@ -46,7 +46,7 @@ class FieldsSourceCommand extends Command {
     /** @var MigrationInterface[] $migration */
     foreach ($migrationIds as $type => $migration) {
       $io->block($type);
-      foreach ($migration as $id => $plugin) {
+      foreach ($migration as $plugin) {
         $source = $plugin->getSourcePlugin();
         $table = [];
         foreach ($source->fields() as $machine_name => $description) {

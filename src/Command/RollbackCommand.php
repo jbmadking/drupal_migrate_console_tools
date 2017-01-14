@@ -67,7 +67,7 @@ class RollbackCommand extends Command {
     }
 
     // Take it one group at a time, rolling back the migrations within each group.
-    foreach ($migrations as $group_id => $migration_list) {
+    foreach ($migrations as $migration_list) {
       // Roll back in reverse order.
       $migration_list = array_reverse($migration_list);
       foreach ($migration_list as $migrationId => $migration) {

@@ -100,7 +100,7 @@ class ImportCommand extends Command {
     $options['logger'] = new ConsoleLogMigrateMessage($io);
 
     // Take it one group at a time, importing the migrations within each group.
-    foreach ($migrations as $group_id => $migration_list) {
+    foreach ($migrations as $migration_list) {
       array_walk($migration_list, [$this, 'executeMigration'], $options);
     }
 
