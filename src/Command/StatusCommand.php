@@ -123,7 +123,7 @@ class StatusCommand extends Command {
 
   /**
    * @param $groupId
-   * @return array
+   * @return string[]
    */
   private function getHeader($groupId) {
 

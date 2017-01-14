@@ -23,7 +23,7 @@ trait MigrateCommandTrait {
 
   /**
    * @param \Symfony\Component\Console\Input\InputInterface $input
-   * @param array                                           $inputOptions
+   * @param string[]                                           $inputOptions
    * @return array
    */
   protected function buildOptionList(InputInterface $input,
@@ -65,8 +65,8 @@ trait MigrateCommandTrait {
 
 
   /**
-   * @param        $name
-   * @param null   $shortcut
+   * @param        string $name
+   * @param string   $shortcut
    * @param null   $mode
    * @param string $description
    * @param null   $default
@@ -77,7 +77,7 @@ trait MigrateCommandTrait {
   abstract public function addOption($name, $shortcut = null, $mode = null, $description = '', $default = null);
 
   /**
-   * @param        $name
+   * @param        string $name
    * @param null   $mode
    * @param string $description
    * @param null   $default
@@ -88,7 +88,7 @@ trait MigrateCommandTrait {
   abstract public function addArgument($name, $mode = null, $description = '', $default = null);
 
   /**
-   * @param array $keys
+   * @param string[] $keys
    * @param array $options
    * @return bool
    *
