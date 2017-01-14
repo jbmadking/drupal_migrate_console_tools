@@ -44,7 +44,6 @@ class MessagesCommand extends Command {
       $this->processMessages($migrationId, $options, $io);
     }
 
-    //$io->info($this->trans('commands.migrate.messages.messages.success'));
   }
 
   /**

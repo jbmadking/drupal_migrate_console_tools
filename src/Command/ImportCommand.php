@@ -69,12 +69,24 @@ class ImportCommand extends Command {
   protected function execute(InputInterface $input, OutputInterface $output) {
     $io = new DrupalStyle($input, $output);
 
-    $group_names = $input->getOption('group');
-    $tag_names = $input->getOption('tag');
-    $all = $input->getOption('all');
+
     $migrationNames = $this->getMigrationIds($input);
 
-    if (!$all && !$group_names && !$migrationNames && !$tag_names) {
+    $options = $this->buildOptionList($input,
+                                      [
+                                        'limit',
+                                        'feedback',
+                                        'idlist',
+                                        'update',
+                                        'force',
+                                        'execute-dependencies',
+                                        'group',
+                                        'tag',
+                                        'all',
+                                      ]);
+
+
+    if ($this->testForRequiredKeys(['group','all','tag'],$options) && empty($migrationNames)) {
       $io->error('You must specify --all, --group, --tag or one or more migration names separated by commas');
       return;
     }
@@ -85,15 +97,6 @@ class ImportCommand extends Command {
       return;
     }
 
-    $options = $this->buildOptionList($input,
-                                      [
-                                        'limit',
-                                        'feedback',
-                                        'idlist',
-                                        'update',
-                                        'force',
-                                        'execute-dependencies',
-                                      ]);
     $options['logger'] = new ConsoleLogMigrateMessage($io);
 
     // Take it one group at a time, importing the migrations within each group.
@@ -101,7 +104,6 @@ class ImportCommand extends Command {
       array_walk($migration_list, [$this, 'executeMigration'], $options);
     }
 
-    //$io->info($this->trans('commands.migrate.import.messages.success'));
   }
 
 
@@ -147,8 +149,6 @@ class ImportCommand extends Command {
       $log->display("exception when importing {$migrationId} : {$e->getMessage()} : You must clean-up/reset this migration",
                     'error');
     }
-    // drush_op() provides --simulate support
-    //drush_op([$executable, 'import']);
   }
 
 }

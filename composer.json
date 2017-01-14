@@ -6,7 +6,8 @@
     "authors": [
         {
             "name": "Tom Whiston",
-            "email": "tom.whiston@pwc-digital.ch"
+            "email": "tom.whiston@pwc-digital.ch",
+            "role": "Developer"
         }
     ],
     "require": {

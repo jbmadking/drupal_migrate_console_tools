@@ -56,6 +56,5 @@ class FieldsSourceCommand extends Command {
       }
     }
 
-    //$io->info($this->trans('commands.migrate.fields-source.messages.success'));
   }
 }

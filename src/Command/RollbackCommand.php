@@ -54,10 +54,9 @@ class RollbackCommand extends Command {
 
     $options['logger'] = new ConsoleLogMigrateMessage($io);
 
-    if (!$options['all'] && !$options['group'] && empty($migrationIds) &&
-        !$options['tag']
+    if (!$this->testForRequiredKeys(['all', 'group', 'tag'], $options) && empty($migrationIds)
     ) {
-      $io->warning('You must specify --all, --group, --tag, or one or more migration names separated by commas');
+      $io->warning('You must specify --all, --group, or one or more migration names separated by commas');
       return;
     }
 
@@ -84,12 +83,8 @@ class RollbackCommand extends Command {
           $options['logger']->display("exception when rolling back {$migrationId} : {$e->getMessage()} : You must clean-up/reset this migration",
                                       'error');
         }
-
-        // drush_op() provides --simulate support.
-        //drush_op(array($executable, 'rollback'));
       }
     }
 
-    //$io->info($this->trans('commands.migrate.rollback.messages.success'));
   }
 }

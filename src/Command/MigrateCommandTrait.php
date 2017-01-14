@@ -63,6 +63,47 @@ trait MigrateCommandTrait {
                      'Name of the migration tag to list');
   }
 
+
+  /**
+   * @param        $name
+   * @param null   $shortcut
+   * @param null   $mode
+   * @param string $description
+   * @param null   $default
+   * @return mixed
+   *
+   * Ensure that this trait is used with a command
+   */
+  abstract public function addOption($name, $shortcut = null, $mode = null, $description = '', $default = null);
+
+  /**
+   * @param        $name
+   * @param null   $mode
+   * @param string $description
+   * @param null   $default
+   * @return mixed
+   *
+   * Ensure that this trait is used with a command
+   */
+  abstract public function addArgument($name, $mode = null, $description = '', $default = null);
+
+  /**
+   * @param array $keys
+   * @param array $options
+   * @return bool
+   *
+   * Test for keys that you need, and return as soon as one is not found
+   */
+  protected function testForRequiredKeys(array $keys, array $options){
+    foreach ($keys as $key) {
+      if(!array_key_exists($key,$options)){
+        //return false as soon as a missing key is found
+        return FALSE;
+      }
+    }
+    return TRUE;
+  }
+
   /**
    * @param \Symfony\Component\Console\Input\InputInterface $input
    * @return array

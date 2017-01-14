@@ -16,8 +16,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * Class StatusCommand.
  *
- * //TODO - dependency injection
- *
  * @package Drupal\migrate_tools
  */
 class StatusCommand extends Command {
@@ -56,7 +54,6 @@ class StatusCommand extends Command {
       $this->processGroup($groupId, $migration_list, $nameOnly, $io);
     }
 
-    // $io->info($this->trans('commands.migrate.status.messages.success'));
   }
 
   /**
@@ -173,7 +170,7 @@ class StatusCommand extends Command {
     } catch (\Exception $e) {
       $source_rows = -1;
     } catch (\Throwable $t) {
-      //TODO - comment out before release
+      //php 7 only
       $source_rows = -1;
     }
     // -1 indicates uncountable sources.

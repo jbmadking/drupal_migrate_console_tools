@@ -48,7 +48,7 @@ class ResetCommand extends Command {
 
     $migrationIds = $this->migrationList($input);
 
-    if (!$options['all'] && !$options['group'] && empty($migrationIds)
+    if (!$this->testForRequiredKeys(['all', 'group'], $options) && empty($migrationIds)
     ) {
       $io->warning('You must specify --all, --group, or one or more migration names separated by commas');
       return;
@@ -59,7 +59,7 @@ class ResetCommand extends Command {
         $this->processReset($migration, $io);
       }
     }
-    // $io->info($this->trans('commands.migrate.reset-status.messages.success'));
+
   }
 
   /**

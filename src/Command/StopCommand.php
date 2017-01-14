@@ -44,7 +44,6 @@ class StopCommand extends Command {
     }
 
 
-    // $io->info($this->trans('commands.migrate.stop.messages.success'));
   }
 
   /**

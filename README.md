@@ -1,5 +1,8 @@
 A port of the commands from drupal migrate_tools module for Drupal Console
 
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/ibrows/drupal_migrate_console_tools/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/ibrows/drupal_migrate_console_tools/?branch=master)
+[![Build Status](https://scrutinizer-ci.com/g/ibrows/drupal_migrate_console_tools/badges/build.png?b=master)](https://scrutinizer-ci.com/g/ibrows/drupal_migrate_console_tools/build-status/master)
+
 Drupal Console commands supported include:
 
 * migrate:status - Lists migrations and their status.
