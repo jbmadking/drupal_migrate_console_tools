@@ -73,7 +73,7 @@ trait MigrateCommandTrait {
    *
    * @param string      $name
    * @param string      $shortcut
-   * @param int         $mode
+   * @param int|null    $mode
    *                    InputOption constant
    * @param string      $description
    * @param null|string $default
@@ -90,7 +90,7 @@ trait MigrateCommandTrait {
    * Ensure that this trait is used with a command
    *
    * @param string      $name
-   * @param int         $mode
+   * @param int|null    $mode
    * @param string      $description
    * @param null|string $default
    *
@@ -170,12 +170,12 @@ trait MigrateCommandTrait {
   }
 
   /**
-   * @param string $migrationIds
-   * @param array  $plugins
+   * @param array $migrationIds
+   * @param array $plugins
    *
    * @return array
    */
-  private function getMatchedMigrations($migrationIds, array $plugins) {
+  private function getMatchedMigrations(array $migrationIds, array $plugins) {
     return empty($migrationIds) ? $plugins :
       $this->restrictMigrations($migrationIds, $plugins);
   }
