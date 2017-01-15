@@ -113,9 +113,10 @@ class StatusCommand extends Command {
   private function processFullInfo($groupId, array $migrationList) {
 
     $rows = [];
+
     /**
-     * @var  $migration_id string
-     * @var  $migration    MigrationInterface
+     * @var  $migrationId
+     * @var  $migration
      */
     foreach ($migrationList as $migrationId => $migration) {
       $rows[] = $this->getRow($migrationId, $migration);

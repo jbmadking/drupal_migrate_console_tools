@@ -195,7 +195,9 @@ class MigrateExecutable extends MigrateExecutableBase {
   }
 
   /**
-   * Return the total number of items processed. Note that STATUS_NEEDS_UPDATE
+   * Return the total number of items processed.
+   *
+   * Note that STATUS_NEEDS_UPDATE
    * is not counted, since this is typically set on stubs created as side
    * effects, not on the primary item being imported.
    *
@@ -251,6 +253,8 @@ class MigrateExecutable extends MigrateExecutableBase {
   }
 
   /**
+   * Print progress message
+   *
    * Emit information on what we've done since the last feedback (or the
    * beginning of this migration).
    *
@@ -350,7 +354,6 @@ class MigrateExecutable extends MigrateExecutableBase {
    *   The prepare-row event.
    *
    * @throws \Drupal\migrate\MigrateSkipRowException
-   *
    */
   public function onPrepareRow(MigratePrepareRowEvent $event) {
     if (!empty($this->idlist)) {

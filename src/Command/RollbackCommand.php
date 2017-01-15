@@ -23,6 +23,7 @@ class RollbackCommand extends Command {
 
   /**
    * {@inheritdoc}
+   *
    * @throws \Symfony\Component\Console\Exception\InvalidArgumentException
    */
   protected function configure() {
@@ -40,6 +41,7 @@ class RollbackCommand extends Command {
 
   /**
    * {@inheritdoc}
+   *
    * @throws \Drupal\migrate\MigrateException
    * @throws \Symfony\Component\Console\Exception\InvalidArgumentException
    */
@@ -87,4 +89,5 @@ class RollbackCommand extends Command {
     }
 
   }
+
 }

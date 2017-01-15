@@ -22,6 +22,7 @@ class MessagesCommand extends Command {
 
   /**
    * {@inheritdoc}
+   *
    * @throws \Symfony\Component\Console\Exception\InvalidArgumentException
    */
   protected function configure() {
@@ -29,11 +30,15 @@ class MessagesCommand extends Command {
       ->setName('migrate:messages')
       ->setDescription($this->trans('commands.migrate.messages.description'));
     $this->addCommonArguments();
-    $this->addOption('csv', '', InputOption::VALUE_NONE, $this->trans('commands.migrate.import.messages.csv'));
+    $this->addOption('csv',
+                     '',
+                     InputOption::VALUE_NONE,
+                     $this->trans('commands.migrate.import.messages.csv'));
   }
 
   /**
    * {@inheritdoc}
+   *
    * @throws \Symfony\Component\Console\Exception\InvalidArgumentException
    */
   protected function execute(InputInterface $input, OutputInterface $output) {
@@ -48,19 +53,23 @@ class MessagesCommand extends Command {
   }
 
   /**
-   * @param                                   $migrationId
-   * @param                                   $options
+   * Get the messages for the migration
+   *
+   * @param string $migrationId
+   * @param array $options
    * @param \Drupal\Console\Style\DrupalStyle $io
    */
-  private function processMessages($migrationId, $options, DrupalStyle $io) {
+  private function processMessages($migrationId,
+                                   array $options,
+                                   DrupalStyle $io) {
     /** @var MigrationInterface $migration */
     $migration = \Drupal::service('plugin.manager.migration')
-                        ->createInstance($migrationId);//TODO - di
+                        ->createInstance($migrationId); //TODO - di
     if ($migration) {
       $table = $this->getTable($migration);
       if (empty($table)) {
         $io->simple("No messages for migration {$migrationId}");
-      } else if (array_key_exists('csv', $options)) {
+      } elseif (array_key_exists('csv', $options)) {
         foreach ($table as $row) {
           fputcsv(STDOUT, $row);
         }
@@ -74,7 +83,10 @@ class MessagesCommand extends Command {
   }
 
   /**
+   * Make a table of messages from a migration
+   *
    * @param \Drupal\migrate\Plugin\MigrationInterface $migration
+   *
    * @return array
    */
   private function getTable(MigrationInterface $migration) {
@@ -95,4 +107,5 @@ class MessagesCommand extends Command {
     }
     return $table;
   }
+
 }

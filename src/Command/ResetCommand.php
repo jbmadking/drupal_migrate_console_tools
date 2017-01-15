@@ -7,7 +7,6 @@ use Drupal\Console\Style\DrupalStyle;
 use Drupal\migrate\Plugin\MigrationInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -23,6 +22,7 @@ class ResetCommand extends Command {
 
   /**
    * {@inheritdoc}
+   *
    * @throws \Symfony\Component\Console\Exception\InvalidArgumentException
    */
   protected function configure() {
@@ -36,6 +36,7 @@ class ResetCommand extends Command {
 
   /**
    * {@inheritdoc}
+   *
    * @throws \Symfony\Component\Console\Exception\InvalidArgumentException
    */
   protected function execute(InputInterface $input, OutputInterface $output) {
@@ -62,10 +63,11 @@ class ResetCommand extends Command {
   }
 
   /**
-   * @param MigrationInterface                $migration
+   * @param MigrationInterface $migration
    * @param \Drupal\Console\Style\DrupalStyle $io
    */
-  private function processReset($migration, DrupalStyle $io) {
+  private function processReset(MigrationInterface $migration,
+                                DrupalStyle $io) {
     if ($migration) {
       $status = $migration->getStatus();
       if ($status === MigrationInterface::STATUS_IDLE) {
@@ -79,4 +81,5 @@ class ResetCommand extends Command {
     }
 
   }
+
 }

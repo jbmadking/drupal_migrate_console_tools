@@ -12,7 +12,9 @@ use Drupal\migrate\MigrateMessageInterface;
  */
 class ConsoleLogMigrateMessage implements MigrateMessageInterface {
 
-  /** @var  DrupalStyle */
+  /**
+   * @var  DrupalStyle
+   */
   private $io;
 
   /**

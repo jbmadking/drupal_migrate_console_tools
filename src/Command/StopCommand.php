@@ -55,7 +55,7 @@ class StopCommand extends Command {
 
     /** @var MigrationInterface $migration */
     $migration = \Drupal::service('plugin.manager.migration')
-                        ->createInstance($migrationId);//TODO - DI
+                        ->createInstance($migrationId); //TODO - DI
     if ($migration) {
       $status = $migration->getStatus();
       switch ($status) {

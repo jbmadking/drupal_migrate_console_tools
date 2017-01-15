@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: twhiston
- * Date: 12/01/17
- * Time: 20:18
- */
 
 namespace Drupal\migrate_console_tools\Command;
 
@@ -23,6 +17,7 @@ trait MigrateCommandTrait {
   /**
    * @param \Symfony\Component\Console\Input\InputInterface $input
    * @param string[]                                        $inputOptions
+   *
    * @return array
    * @throws \Symfony\Component\Console\Exception\InvalidArgumentException
    */
@@ -41,7 +36,7 @@ trait MigrateCommandTrait {
   }
 
   /**
-   *
+   * Add the main argument which is required in every command
    */
   protected function addCommonArguments() {
     $this->addArgument('migration',
@@ -50,7 +45,7 @@ trait MigrateCommandTrait {
   }
 
   /**
-   *
+   * Add a common set of options to command
    */
   protected function addCommonOptions() {
     $this->addOption('group',
@@ -64,7 +59,7 @@ trait MigrateCommandTrait {
   }
 
   /**
-   *
+   * Add the All option to a command
    */
   protected function addAllOption() {
     $this->addOption('all',
@@ -74,14 +69,16 @@ trait MigrateCommandTrait {
   }
 
   /**
-   * @param        string $name
-   * @param string        $shortcut
-   * @param null          $mode
-   * @param string        $description
-   * @param null          $default
-   * @return mixed
-   *
    * Ensure that this trait is used with a command
+   *
+   * @param string      $name
+   * @param string      $shortcut
+   * @param int         $mode
+   *                    InputOption constant
+   * @param string      $description
+   * @param null|string $default
+   *
+   * @return mixed
    */
   abstract public function addOption($name,
                                      $shortcut = NULL,
@@ -90,13 +87,14 @@ trait MigrateCommandTrait {
                                      $default = NULL);
 
   /**
-   * @param        string $name
-   * @param null          $mode
-   * @param string        $description
-   * @param null          $default
-   * @return mixed
-   *
    * Ensure that this trait is used with a command
+   *
+   * @param string      $name
+   * @param int         $mode
+   * @param string      $description
+   * @param null|string $default
+   *
+   * @return mixed
    */
   abstract public function addArgument($name,
                                        $mode = NULL,
@@ -104,11 +102,12 @@ trait MigrateCommandTrait {
                                        $default = NULL);
 
   /**
+   * Test for keys that you need, and return as soon as one is not found
+   *
    * @param string[] $keys
    * @param array    $options
-   * @return bool
    *
-   * Test for keys that you need, and return as soon as one is not found
+   * @return bool
    */
   protected function testForRequiredKeys(array $keys, array $options) {
     foreach ($keys as $key) {
@@ -122,6 +121,7 @@ trait MigrateCommandTrait {
 
   /**
    * @param \Symfony\Component\Console\Input\InputInterface $input
+   *
    * @return array
    * @throws \Symfony\Component\Console\Exception\InvalidArgumentException
    */
@@ -132,6 +132,7 @@ trait MigrateCommandTrait {
 
   /**
    * @param \Symfony\Component\Console\Input\InputInterface $input
+   *
    * @return array
    * @throws \Symfony\Component\Console\Exception\InvalidArgumentException
    */
@@ -155,6 +156,7 @@ trait MigrateCommandTrait {
 
   /**
    * @param \Symfony\Component\Console\Input\InputInterface $input
+   *
    * @return array
    * @throws \Symfony\Component\Console\Exception\InvalidArgumentException
    */
@@ -168,8 +170,9 @@ trait MigrateCommandTrait {
   }
 
   /**
-   * @param       $migrationIds
-   * @param array $plugins
+   * @param string $migrationIds
+   * @param array  $plugins
+   *
    * @return array
    */
   private function getMatchedMigrations($migrationIds, array $plugins) {
@@ -178,28 +181,30 @@ trait MigrateCommandTrait {
   }
 
   /**
-   * @param       $migrationIds
+   * @param array $migrationIds
    * @param array $plugins
+   *
    * @return array
    */
-  private function restrictMigrations($migrationIds, array $plugins) {
+  private function restrictMigrations(array $migrationIds, array $plugins) {
     $matchedMigrations = [];
     // Get the requested migrations.
     foreach ($plugins as $id => $migration) {
       if (in_array(Unicode::strtolower($id), $migrationIds)) {
-        $matchedMigrations [$id] = $migration;
+        $matchedMigrations[$id] = $migration;
       }
     }
     return $matchedMigrations;
   }
 
   /**
-   * @param       $migrationIds
+   * @param array $migrationIds
    * @param array $matchedMigrations
-   * @param       $filter
+   * @param array $filter
+   *
    * @return array
    */
-  private function filterMigrations($migrationIds,
+  private function filterMigrations(array $migrationIds,
                                     array $matchedMigrations,
                                     array $filter) {
     // Filters the matched migrations if a group or a tag has been input.
@@ -219,10 +224,11 @@ trait MigrateCommandTrait {
   }
 
   /**
-   * @param array $migrationIds
-   * @param array $matchedMigrations
-   * @param       $property
-   * @param       $values
+   * @param array  $migrationIds
+   * @param array  $matchedMigrations
+   * @param string $property
+   * @param array  $values
+   *
    * @return array
    */
   private function runFilter(array $migrationIds,
@@ -256,7 +262,8 @@ trait MigrateCommandTrait {
   }
 
   /**
-   * @param $matchedMigrations
+   * @param array $matchedMigrations
+   *
    * @return array
    */
   private function sortMigrations(array $matchedMigrations) {
@@ -271,11 +278,13 @@ trait MigrateCommandTrait {
   }
 
   /**
-   * @param $migration
+   * @param MigrationInterface $migration
+   *
    * @return string
    */
-  private function getConfiguredGroupId($migration) {
+  private function getConfiguredGroupId(MigrationInterface $migration) {
     return empty($migration->get('migration_group')) ? 'default' :
       $migration->get('migration_group');
   }
+
 }
