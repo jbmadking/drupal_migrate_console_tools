@@ -10,6 +10,8 @@
       "role": "Developer"
     }
   ],
+  "minimum-stability": "dev",
+  "prefer-stable": true,
   "require": {
     "roave/security-advisories": "dev-master"
   },
