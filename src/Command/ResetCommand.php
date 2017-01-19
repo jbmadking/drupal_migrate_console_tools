@@ -63,8 +63,12 @@ class ResetCommand extends Command {
   }
 
   /**
+   * Process a reset command.
+   *
    * @param MigrationInterface $migration
+   *    The migration interface.
    * @param \Drupal\Console\Style\DrupalStyle $io
+   *    Console Io.
    */
   private function processReset(MigrationInterface $migration,
                                 DrupalStyle $io) {
@@ -72,11 +76,13 @@ class ResetCommand extends Command {
       $status = $migration->getStatus();
       if ($status === MigrationInterface::STATUS_IDLE) {
         $io->note("Migration {$migration->id()} is already Idle");
-      } else {
+      }
+      else {
         $migration->setStatus(MigrationInterface::STATUS_IDLE);
         $io->success("Migration {$migration->id()} reset to Idle");
       }
-    } else {
+    }
+    else {
       $io->error("Migration {$migration->id()} does not exist");
     }
 

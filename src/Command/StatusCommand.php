@@ -59,10 +59,16 @@ class StatusCommand extends Command {
   }
 
   /**
-   * @param string      $groupId
-   * @param array       $migrationList
-   * @param string      $nameOnly
+   * Process the group.
+   *
+   * @param string $groupId
+   *    The group ID.
+   * @param array $migrationList
+   *    A list of migrations.
+   * @param string $nameOnly
+   *    If set then only output the name, which is faster.
    * @param DrupalStyle $io
+   *    Console style io.
    */
   private function processGroup($groupId,
                                 array $migrationList,
@@ -77,9 +83,15 @@ class StatusCommand extends Command {
   }
 
   /**
+   * Process only the name.
+   *
    * @param string $groupId
-   * @param array  $migrationList
+   *    The group ID.
+   * @param array $migrationList
+   *    A list of migrations.
+   *
    * @return array
+   *    The data to print.
    */
   private function processNameOnly($groupId, array $migrationList) {
 
@@ -97,8 +109,13 @@ class StatusCommand extends Command {
   }
 
   /**
+   * Get the name of the group.
+   *
    * @param string $groupId
+   *    The group ID.
+   *
    * @return string
+   *    The group name.
    */
   private function getGroupName($groupId) {
     $group = MigrationGroup::load($groupId);
@@ -106,15 +123,21 @@ class StatusCommand extends Command {
   }
 
   /**
+   * Process the full info.
+   *
    * @param string $groupId
-   * @param array  $migrationList
+   *    The group ID.
+   * @param array $migrationList
+   *    A list of migrations.
+   *
    * @return array
+   *    The full data.
    */
   private function processFullInfo($groupId, array $migrationList) {
 
     $rows = [];
 
-    /**
+    /*
      * @var  $migrationId
      * @var  $migration
      */
@@ -125,8 +148,13 @@ class StatusCommand extends Command {
   }
 
   /**
+   * Get the table header.
+   *
    * @param string $groupId
-   * @return string[]
+   *   The group ID.
+   *
+   * @return array
+   *   An array of strings.
    */
   private function getHeader($groupId) {
 
@@ -142,9 +170,15 @@ class StatusCommand extends Command {
   }
 
   /**
-   * @param string                                    $migrationId
+   * Get a row.
+   *
+   * @param string $migrationId
+   *   The ID of the migration.
    * @param \Drupal\migrate\Plugin\MigrationInterface $migration
+   *   The migration interface.
+   *
    * @return array
+   *   The row data.
    */
   private function getRow($migrationId, MigrationInterface $migration) {
 
@@ -162,18 +196,25 @@ class StatusCommand extends Command {
   }
 
   /**
+   * Get the source rows.
+   *
    * @param \Drupal\migrate\Plugin\MigrationInterface $migration
+   *   The migration interface.
+   *
    * @return int|string
+   *   The source rows.
    */
   private function getSourceRows(MigrationInterface $migration) {
 
     try {
       $source_plugin = $migration->getSourcePlugin();
       $source_rows = $source_plugin->count();
-    } catch (\Exception $e) {
+    }
+    catch (\Exception $e) {
       $source_rows = -1;
-    } catch (\Throwable $t) {
-      //php 7 only
+    }
+    catch (\Throwable $t) {
+      // Php 7 only.
       $source_rows = -1;
     }
     // -1 indicates uncountable sources.
@@ -181,9 +222,15 @@ class StatusCommand extends Command {
   }
 
   /**
-   * @param string                                       $sourceRows
+   * Get unprocessed.
+   *
+   * @param string $sourceRows
+   *   The source rows.
    * @param \Drupal\migrate\Plugin\MigrateIdMapInterface $map
+   *   The migrate interface.
+   *
    * @return string
+   *   The unprocessed data.
    */
   private function getUnprocessed($sourceRows, MigrateIdMapInterface $map) {
     return ($sourceRows === 'N/A') ? $sourceRows :
@@ -191,13 +238,19 @@ class StatusCommand extends Command {
   }
 
   /**
+   * Get the last imported.
+   *
    * @param \Drupal\migrate\Plugin\MigrationInterface $migration
+   *   The migration interface.
+   *
    * @return string
+   *   The last imported.
    */
   private function getLastImported(MigrationInterface $migration) {
     $store = \Drupal::keyValue('migrate_last_imported');
     $lastImported = $store->get($migration->id(), FALSE);
-    $date_formatter = \Drupal::service('date.formatter'); //TODO - inject this
+    // TODO - inject this.
+    $date_formatter = \Drupal::service('date.formatter');
     return $lastImported ? $date_formatter->format($lastImported / 1000,
                                                    'custom',
                                                    'Y-m-d H:i:s') : '';

@@ -48,14 +48,19 @@ class StopCommand extends Command {
   }
 
   /**
-   * @param string                            $migrationId
+   * Process a stop command.
+   *
+   * @param string $migrationId
+   *   The migration Id.
    * @param \Drupal\Console\Style\DrupalStyle $io
+   *   Drupal Console style io.
    */
   private function processStop($migrationId, DrupalStyle $io) {
 
+    // TODO - DI.
     /** @var MigrationInterface $migration */
     $migration = \Drupal::service('plugin.manager.migration')
-                        ->createInstance($migrationId); //TODO - DI
+      ->createInstance($migrationId);
     if ($migration) {
       $status = $migration->getStatus();
       switch ($status) {
@@ -76,7 +81,8 @@ class StopCommand extends Command {
           $io->warning("Migration {$migrationId} requested to stop");
           break;
       }
-    } else {
+    }
+    else {
       $io->error("Migration {$migrationId} does not exist");
     }
   }

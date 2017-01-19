@@ -53,41 +53,50 @@ class MessagesCommand extends Command {
   }
 
   /**
-   * Get the messages for the migration
+   * Get the messages for the migration.
    *
    * @param string $migrationId
+   *   The migration id.
    * @param array $options
+   *   An array of options (◔_◔).
    * @param \Drupal\Console\Style\DrupalStyle $io
+   *   Drupal style io.
    */
   private function processMessages($migrationId,
                                    array $options,
                                    DrupalStyle $io) {
+    // TODO - di.
     /** @var MigrationInterface $migration */
     $migration = \Drupal::service('plugin.manager.migration')
-                        ->createInstance($migrationId); //TODO - di
+      ->createInstance($migrationId);
     if ($migration) {
       $table = $this->getTable($migration);
       if (empty($table)) {
         $io->simple("No messages for migration {$migrationId}");
-      } elseif (array_key_exists('csv', $options)) {
+      }
+      elseif (array_key_exists('csv', $options)) {
         foreach ($table as $row) {
           fputcsv(STDOUT, $row);
         }
-      } else {
+      }
+      else {
         $io->simple($migrationId);
         $io->table(array_shift($table), $table);
       }
-    } else {
+    }
+    else {
       $io->warning("Migration {$migrationId} does not exist");
     }
   }
 
   /**
-   * Make a table of messages from a migration
+   * Make a table of messages from a migration.
    *
    * @param \Drupal\migrate\Plugin\MigrationInterface $migration
+   *   The migration interface.
    *
    * @return array
+   *    A display table.
    */
   private function getTable(MigrationInterface $migration) {
     $map = $migration->getIdMap();

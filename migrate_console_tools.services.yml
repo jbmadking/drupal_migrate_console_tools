@@ -40,4 +40,3 @@ services:
     arguments: []
     tags:
       - { name: drupal.command }
-

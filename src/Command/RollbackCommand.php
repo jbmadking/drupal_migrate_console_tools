@@ -68,7 +68,7 @@ class RollbackCommand extends Command {
       return;
     }
 
-    // Take it one group at a time, rolling back the migrations within each group.
+    // Take it one group at a time rolling back the migrations within each.
     foreach ($migrations as $migration_list) {
       // Roll back in reverse order.
       $migration_list = array_reverse($migration_list);
@@ -78,10 +78,12 @@ class RollbackCommand extends Command {
                                             $options);
         try {
           $executable->rollback();
-        } catch (\Exception $e) {
+        }
+        catch (\Exception $e) {
           $options['logger']->display("exception when rolling back {$migrationId} : {$e->getMessage()} : You must clean-up/reset this migration",
                                       'error');
-        } catch (\Throwable $e) {
+        }
+        catch (\Throwable $e) {
           $options['logger']->display("exception when rolling back {$migrationId} : {$e->getMessage()} : You must clean-up/reset this migration",
                                       'error');
         }

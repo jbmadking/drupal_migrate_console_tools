@@ -4,7 +4,6 @@ namespace Drupal\migrate_console_tools\Command;
 
 use Drupal\Console\Command\Shared\ContainerAwareCommandTrait;
 use Drupal\Console\Style\DrupalStyle;
-use Drupal\migrate\MigrateMessageInterface;
 use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\migrate_console_tools\ConsoleLogMigrateMessage;
 use Drupal\migrate_console_tools\MigrateExecutable;
@@ -114,21 +113,11 @@ class ImportCommand extends Command {
    * given, the migration's dependencies will also be executed first.
    *
    * @param \Drupal\migrate\Plugin\MigrationInterface $migration
-   *                                                               The
-   *                                                               migration to
-   *                                                               execute.
-   * @param string                                    $migrationId
-   *                                                               The
-   *                                                               migration ID
-   *                                                               (not used,
-   *                                                               just an
-   *                                                               artifact of
-   *                                                               array_walk()).
-   * @param array                                     $options
-   *                                                               Additional
-   *                                                               options for
-   *                                                               the
-   *                                                               migration.
+   *    The migration to execute.
+   * @param string $migrationId
+   *   The migration ID (not used, just an artifact of array_walk()).
+   * @param array $options
+   *    Additional options for the migration.
    *
    * @throws \Drupal\migrate\MigrateException
    */
@@ -139,7 +128,8 @@ class ImportCommand extends Command {
     $log = $options['logger'];
     $requiredIds = $migration->get('requirements');
     if (array_key_exists('execute-dependencies', $options) && $requiredIds) {
-      $manager = \Drupal::service('plugin.manager.config_entity_migration');//TODO inject
+      // TODO inject this.
+      $manager = \Drupal::service('plugin.manager.config_entity_migration');
       $required_migrations = $manager->createInstances($requiredIds);
       $dependency_options = array_merge($options, ['is_dependency' => TRUE]);
       array_walk($required_migrations,
@@ -155,10 +145,12 @@ class ImportCommand extends Command {
     $executable = new MigrateExecutable($migration, $log, $options);
     try {
       $executable->import();
-    } catch (\Exception $e) {
+    }
+    catch (\Exception $e) {
       $log->display("exception when importing {$migrationId} : {$e->getMessage()} : You must clean-up/reset this migration",
                     'error');
-    } catch (\Throwable $e) {
+    }
+    catch (\Throwable $e) {
       $log->display("exception when importing {$migrationId} : {$e->getMessage()} : You must clean-up/reset this migration",
                     'error');
     }

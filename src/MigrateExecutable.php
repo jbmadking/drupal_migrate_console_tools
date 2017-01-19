@@ -18,7 +18,7 @@ use Drupal\migrate_plus\Event\MigrateEvents as MigratePlusEvents;
 use Drupal\migrate_plus\Event\MigratePrepareRowEvent;
 
 /**
- * Class MigrateExecutable
+ * Class MigrateExecutable.
  *
  * @package Drupal\migrate_console_tools
  */
@@ -132,7 +132,7 @@ class MigrateExecutable extends MigrateExecutableBase {
    */
   public function onMapSave(MigrateMapSaveEvent $event) {
     // Only count saves for this migration.
-    if ($event->getMap()->getQualifiedMapTableName() ==
+    if ($event->getMap()->getQualifiedMapTableName() ===
         $this->migration->getIdMap()->getQualifiedMapTableName()
     ) {
       $fields = $event->getFields();
@@ -142,7 +142,8 @@ class MigrateExecutable extends MigrateExecutableBase {
           $this->preExistingItem
       ) {
         $this->saveCounters[MigrateIdMapInterface::STATUS_NEEDS_UPDATE]++;
-      } else {
+      }
+      else {
         $this->saveCounters[$fields['source_row_status']]++;
       }
     }
@@ -162,6 +163,7 @@ class MigrateExecutable extends MigrateExecutableBase {
    * Return the number of items created.
    *
    * @return int
+   *   The Count.
    */
   public function getCreatedCount() {
     return $this->saveCounters[MigrateIdMapInterface::STATUS_IMPORTED];
@@ -171,6 +173,7 @@ class MigrateExecutable extends MigrateExecutableBase {
    * Return the number of items updated.
    *
    * @return int
+   *    The updated count.
    */
   public function getUpdatedCount() {
     return $this->saveCounters[MigrateIdMapInterface::STATUS_NEEDS_UPDATE];
@@ -180,6 +183,7 @@ class MigrateExecutable extends MigrateExecutableBase {
    * Return the number of items ignored.
    *
    * @return int
+   *    The ignored count.
    */
   public function getIgnoredCount() {
     return $this->saveCounters[MigrateIdMapInterface::STATUS_IGNORED];
@@ -189,6 +193,7 @@ class MigrateExecutable extends MigrateExecutableBase {
    * Return the number of items that failed.
    *
    * @return int
+   *    The failed count.
    */
   public function getFailedCount() {
     return $this->saveCounters[MigrateIdMapInterface::STATUS_FAILED];
@@ -202,6 +207,7 @@ class MigrateExecutable extends MigrateExecutableBase {
    * effects, not on the primary item being imported.
    *
    * @return int
+   *    The processed count.
    */
   public function getProcessedCount() {
     return $this->saveCounters[MigrateIdMapInterface::STATUS_IMPORTED] +
@@ -214,6 +220,7 @@ class MigrateExecutable extends MigrateExecutableBase {
    * Return the number of items rolled back.
    *
    * @return int
+   *    The rollback count.
    */
   public function getRollbackCount() {
     return $this->deleteCounter;
@@ -253,19 +260,21 @@ class MigrateExecutable extends MigrateExecutableBase {
   }
 
   /**
-   * Print progress message
+   * Print progress message.
    *
    * Emit information on what we've done since the last feedback (or the
    * beginning of this migration).
    *
    * @param bool $done
+   *    Done.
    */
   protected function progressMessage($done = TRUE) {
     $processed = $this->getProcessedCount();
     if ($done) {
       $singular_message = "Processed 1 item (@created created, @updated updated, @failures failed, @ignored ignored) - done with '@name'";
       $plural_message = "Processed @numitems items (@created created, @updated updated, @failures failed, @ignored ignored) - done with '@name'";
-    } else {
+    }
+    else {
       $singular_message = "Processed 1 item (@created created, @updated updated, @failures failed, @ignored ignored) - continuing with '@name'";
       $plural_message = "Processed @numitems items (@created created, @updated updated, @failures failed, @ignored ignored) - continuing with '@name'";
     }
@@ -294,17 +303,21 @@ class MigrateExecutable extends MigrateExecutableBase {
   }
 
   /**
+   * The rollback message.
+   *
    * Emit information on what we've done since the last feedback (or the
    * beginning of this migration).
    *
    * @param bool $done
+   *    Done.
    */
   protected function rollbackMessage($done = TRUE) {
     $rolled_back = $this->getRollbackCount();
     if ($done) {
       $singular_message = "Rolled back 1 item - done with '@name'";
       $plural_message = "Rolled back @numitems items - done with '@name'";
-    } else {
+    }
+    else {
       $singular_message = "Rolled back 1 item - continuing with '@name'";
       $plural_message = "Rolled back @numitems items - continuing with '@name'";
     }
@@ -327,7 +340,8 @@ class MigrateExecutable extends MigrateExecutableBase {
     $id_map = $event->getRow()->getIdMap();
     if (!empty($id_map['destid1'])) {
       $this->preExistingItem = TRUE;
-    } else {
+    }
+    else {
       $this->preExistingItem = FALSE;
     }
   }
@@ -358,13 +372,14 @@ class MigrateExecutable extends MigrateExecutableBase {
   public function onPrepareRow(MigratePrepareRowEvent $event) {
     if (!empty($this->idlist)) {
       $row = $event->getRow();
-      /**
-       * @TODO replace for $source_id = $row->getSourceIdValues(); when https://www.drupal.org/node/2698023 is fixed
+      /*
+       * TODO replace for $source_id = $row->getSourceIdValues();
+       * when https://www.drupal.org/node/2698023 is fixed.
        */
       $migration = $event->getMigration();
       $source_id = array_merge(array_flip(array_keys($migration->getSourcePlugin()
-                                                               ->getIds())),
-                               $row->getSourceIdValues());
+        ->getIds())),
+        $row->getSourceIdValues());
       $skip = TRUE;
       foreach ($this->idlist as $item) {
         if (array_values($source_id) === $item) {
@@ -387,7 +402,7 @@ class MigrateExecutable extends MigrateExecutableBase {
         ($this->getProcessedCount() + 1) >= $this->itemLimit
     ) {
       $event->getMigration()
-            ->interruptMigration(MigrationInterface::RESULT_COMPLETED);
+        ->interruptMigration(MigrationInterface::RESULT_COMPLETED);
     }
 
   }

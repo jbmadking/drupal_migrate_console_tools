@@ -2,18 +2,20 @@
 
 namespace Drupal\migrate_console_tools;
 
-use Drupal\Console\Style\DrupalStyle;
+use Drupal\Console\Core\Style\DrupalStyle;
 use Drupal\migrate\MigrateMessageInterface;
 
 /**
- * ConsoleLogMigrateMessage
+ * ConsoleLogMigrateMessage.
  *
  * @package Drupal\migrate_console_tools
  */
 class ConsoleLogMigrateMessage implements MigrateMessageInterface {
 
   /**
-   * @var  DrupalStyle
+   * Drupal Console io styling.
+   *
+   * @var DrupalStyle
    */
   private $io;
 
@@ -21,6 +23,7 @@ class ConsoleLogMigrateMessage implements MigrateMessageInterface {
    * DrushLogMigrateMessage constructor.
    *
    * @param \Drupal\Console\Style\DrupalStyle $io
+   *    Drupal Console io styling.
    */
   public function __construct(DrupalStyle $io) {
     $this->io = $io;
@@ -37,7 +40,7 @@ class ConsoleLogMigrateMessage implements MigrateMessageInterface {
    * @see drush_log()
    */
   public function display($message, $type = 'status') {
-    //TODO - switch on type
+    // TODO - switch on type.
     $this->io->simple($message);
   }
 
