@@ -19,12 +19,12 @@ CONTENTS OF THIS FILE
 INTRODUCTION
 ------------
 
-Migrate Console Tools module is a port of the Migrate Tools module for the Drupal Console project.
+This module ports Migrate Tools module commands to Drupal Console.
 
-Migrate console tools only ports the commands from migrate_tools to Drupal Console
-and does not include any of the UI elements.
+This module only ports the commands & does not include any UI elements.
 It is currently not on the roadmap to add the ui elements.
-Note that these commands do not support drush style --simulate support
+
+Note that these commands do not support drush style --simulate
 
     migrate:status - Lists migrations and their status.
     migrate:import - Performs import operations.
