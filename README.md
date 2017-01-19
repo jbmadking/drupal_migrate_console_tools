@@ -4,6 +4,7 @@ MIGRATE CONSOLE TOOLS
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/ibrows/drupal_migrate_console_tools/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/ibrows/drupal_migrate_console_tools/?branch=master)
 [![Build Status](https://scrutinizer-ci.com/g/ibrows/drupal_migrate_console_tools/badges/build.png?b=master)](https://scrutinizer-ci.com/g/ibrows/drupal_migrate_console_tools/build-status/master)
 
+
 CONTENTS OF THIS FILE
 ---------------------
 
@@ -20,7 +21,9 @@ INTRODUCTION
 
 Migrate Console Tools module is a port of the Migrate Tools module for the Drupal Console project.
 
-Migrate console tools only ports the commands from migrate_tools to Drupal Console and does not include any of the UI elements. It is currently not on the roadmap to add the ui elements.
+Migrate console tools only ports the commands from migrate_tools to Drupal Console
+and does not include any of the UI elements.
+It is currently not on the roadmap to add the ui elements.
 Note that these commands do not support drush style --simulate support
 
     migrate:status - Lists migrations and their status.
@@ -57,7 +60,8 @@ MAINTAINERS
 CONTRIBUTING
 ------------
 
-We use a Github pull request workflow. Each pull request should have a related and cross-linked drupal.org issue.
+We use a Github pull request workflow.
+Each pull request should have a related and cross-linked drupal.org issue.
 
 [github](https://github.com/ibrows/drupal_migrate_console_tools)
 
