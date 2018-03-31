@@ -126,7 +126,7 @@ class ImportCommand extends Command {
     $log = $options['logger'];
     $requiredIds = $migration->get('requirements');
     if (array_key_exists('execute-dependencies', $options) && $requiredIds) {
-      $manager = \Drupal::service('plugin.manager.config_entity_migration');//TODO inject
+      $manager = \Drupal::service('plugin.manager.migration');//TODO inject
       $required_migrations = $manager->createInstances($requiredIds);
       $dependency_options = array_merge($options, ['is_dependency' => TRUE]);
       array_walk($required_migrations,
