@@ -2,8 +2,8 @@
 
 namespace Drupal\migrate_console_tools\Command;
 
-use Drupal\Console\Command\Shared\ContainerAwareCommandTrait;
-use Drupal\Console\Style\DrupalStyle;
+use Drupal\Console\Core\Command\Shared\ContainerAwareCommandTrait;
+use Drupal\Console\Core\Style\DrupalStyle;
 use Drupal\migrate\MigrateMessageInterface;
 use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\migrate_console_tools\ConsoleLogMigrateMessage;

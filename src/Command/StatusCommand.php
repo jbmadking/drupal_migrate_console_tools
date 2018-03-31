@@ -3,8 +3,8 @@
 namespace Drupal\migrate_console_tools\Command;
 
 
-use Drupal\Console\Command\Shared\ContainerAwareCommandTrait;
-use Drupal\Console\Style\DrupalStyle;
+use Drupal\Console\Core\Command\Shared\ContainerAwareCommandTrait;
+use Drupal\Console\Core\Style\DrupalStyle;
 use Drupal\migrate\Plugin\MigrateIdMapInterface;
 use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\migrate_plus\Entity\MigrationGroup;
@@ -35,9 +35,9 @@ class StatusCommand extends Command {
     $this->addCommonArguments();
     $this->addCommonOptions();
     $this->addOption('names-only',
-                     '',
-                     InputOption::VALUE_NONE,
-                     'Only return names, not all the details (faster)');
+      '',
+      InputOption::VALUE_NONE,
+      'Only return names, not all the details (faster)');
   }
 
   /**
@@ -68,15 +68,16 @@ class StatusCommand extends Command {
                                 $io) {
 
     call_user_func_array([$io, 'table'],
-                         $nameOnly ?
-                           $this->processNameOnly($groupId, $migrationList) :
-                           $this->processFullInfo($groupId, $migrationList));
+      $nameOnly ?
+        $this->processNameOnly($groupId, $migrationList) :
+        $this->processFullInfo($groupId, $migrationList));
 
   }
 
   /**
    * @param       $groupId
    * @param array $migrationList
+   *
    * @return array
    */
   private function processNameOnly($groupId, array $migrationList) {
@@ -96,6 +97,7 @@ class StatusCommand extends Command {
 
   /**
    * @param $groupId
+   *
    * @return string
    */
   private function getGroupName($groupId) {
@@ -106,6 +108,7 @@ class StatusCommand extends Command {
   /**
    * @param $groupId
    * @param $migrationList
+   *
    * @return array
    */
   private function processFullInfo($groupId, $migrationList) {
@@ -123,6 +126,7 @@ class StatusCommand extends Command {
 
   /**
    * @param $groupId
+   *
    * @return string[]
    */
   private function getHeader($groupId) {
@@ -141,6 +145,7 @@ class StatusCommand extends Command {
   /**
    * @param                                           $migrationId
    * @param \Drupal\migrate\Plugin\MigrationInterface $migration
+   *
    * @return array
    */
   private function getRow($migrationId, MigrationInterface $migration) {
@@ -160,6 +165,7 @@ class StatusCommand extends Command {
 
   /**
    * @param \Drupal\migrate\Plugin\MigrationInterface $migration
+   *
    * @return int|string
    */
   private function getSourceRows(MigrationInterface $migration) {
@@ -178,8 +184,9 @@ class StatusCommand extends Command {
   }
 
   /**
-   * @param string                                       $sourceRows
+   * @param string $sourceRows
    * @param \Drupal\migrate\Plugin\MigrateIdMapInterface $map
+   *
    * @return string
    */
   private function getUnprocessed($sourceRows, MigrateIdMapInterface $map) {
@@ -189,6 +196,7 @@ class StatusCommand extends Command {
 
   /**
    * @param \Drupal\migrate\Plugin\MigrationInterface $migration
+   *
    * @return string
    */
   private function getLastImported(MigrationInterface $migration) {
@@ -196,8 +204,8 @@ class StatusCommand extends Command {
     $lastImported = $store->get($migration->id(), FALSE);
     $date_formatter = \Drupal::service('date.formatter');//TODO - inject this
     return $lastImported ? $date_formatter->format($lastImported / 1000,
-                                                   'custom',
-                                                   'Y-m-d H:i:s') : '';
+      'custom',
+      'Y-m-d H:i:s') : '';
   }
 
 
