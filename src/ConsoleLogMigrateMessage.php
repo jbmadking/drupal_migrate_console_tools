@@ -2,7 +2,7 @@
 
 namespace Drupal\migrate_console_tools;
 
-use Drupal\Console\Style\DrupalStyle;
+use Drupal\Console\Core\Style\DrupalStyle;
 use Drupal\migrate\MigrateMessageInterface;
 
 class ConsoleLogMigrateMessage implements MigrateMessageInterface {
@@ -12,6 +12,8 @@ class ConsoleLogMigrateMessage implements MigrateMessageInterface {
 
   /**
    * DrushLogMigrateMessage constructor.
+   *
+   * @param \Drupal\Console\Core\Style\DrupalStyle $io
    */
   public function __construct(DrupalStyle $io) {
     $this->io = $io;
