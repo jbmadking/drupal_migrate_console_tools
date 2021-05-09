@@ -122,7 +122,7 @@ trait MigrateCommandTrait {
     // Filter keys must match the migration configuration property name.
     $migrationIds = $this->getMigrationIds($input);
 
-    $manager = \Drupal::service('plugin.manager.config_entity_migration');//TODO - inject
+    $manager = \Drupal::service('plugin.manager.migration');//TODO - inject
     $plugins = $manager->createInstances([]);
 
     $matchedMigrations = $this->getMatchedMigrations($migrationIds, $plugins);
